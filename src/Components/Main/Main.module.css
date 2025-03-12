@@ -1,0 +1,166 @@
+.background {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: rgba(18, 24, 37, 1);
+    width: 150vh;
+    height: 93vh;
+    border-radius: 10px;
+    padding: 20px 149px;
+}
+
+.ul {
+    list-style: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    gap: 16px;
+}
+
+/* Юзер */
+
+.li__users {
+    display: flex;
+    align-items: end;
+    justify-content: flex-end;
+}
+
+.massage__copers {
+    margin-right: 10px;
+    max-width: 18px;
+    max-height: 18px;
+}
+
+.block__user {
+    background-color: rgba(71, 133, 255, 0.5);
+    padding: 7px 7px;
+    margin-right: 10px;
+    border-radius: 10px;
+    display: flex;
+    align-items: end;
+}
+
+.massage__user {
+    padding: 7px 8px;
+    color: white;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin-right: 4px;
+}
+
+.time {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 11px;
+    letter-spacing: 0%;
+    color: rgba(255, 255, 255, 1);
+}
+
+.avatar__users {
+    max-width: 40px;
+    max-height: 40px;
+}
+
+/* СhatGPT */
+
+.li__chatGPT {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.chatGPT__img {
+    max-width: 40px;
+    max-height: 40px;
+}
+
+.chatGPT_content {
+    padding-left: 16px;
+}
+
+.chatGPT__info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.name {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0%;
+    color: rgba(255, 255, 255, 1);
+    margin-right: 10px;
+}
+
+.version {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: 0%;
+    vertical-align: middle;
+    color: rgba(255, 255, 255, 1);
+    padding: 8px 12px;
+    background-color: rgba(34, 43, 68, 1);
+    border-radius: 14px;
+}
+
+.massage__chatGPT {
+    color: rgba(255, 255, 255, 1);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 100%;
+    letter-spacing: 0%;
+}
+
+.massage__bottom {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 8px;
+    align-items: end;
+}
+
+.caps__content {
+    color: rgba(156, 163, 175, 1);
+    margin-right: 14px;
+}
+
+/* Инпут */
+
+.inputContainer {
+    position: relative;
+    width: 100%;
+}
+
+.input {
+    width: 130vh;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: 0%;
+    color: rgba(97, 109, 141, 1);
+    padding: 24px 20px;
+    border: 1px solid rgba(49, 62, 98, 1);
+    border-radius: 10px;
+    background-color: transparent;
+}
+
+.sendButton {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.sendButton img {
+    width: 100%;
+    height: 100%;
+}

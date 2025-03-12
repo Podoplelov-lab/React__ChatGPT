@@ -1,0 +1,75 @@
+import { useEffect, useState } from "react"
+import Chat from "../Chat/Chat"
+import Users from "../Users/Users"
+import styles from "./ChatList.module.css"
+import { deleteChat, getChats, postChat } from "../../api"
+import { TChat } from "../../types"
+
+export default function Chats() {
+    const [chats, setChats] = useState<TChat[]>([])
+
+    // Получение всех чатов
+    useEffect(() => {
+        getChats()
+            .then(({ data }) => setChats(data.data))
+            .catch((error) => console.log(error))
+    }, [])
+
+    // Функция для создания нового чата
+    const handleCreateChat = async () => {
+        try {
+            const { data } = await postChat()
+            setChats((prevChats) => [...prevChats, data])
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    // Функция для удаления чата
+    const handleDeleteChat = async (chatId: string) => {
+        try {
+            await deleteChat(chatId)
+            setChats((prevChats) => prevChats.filter(chat => chat.id !== chatId))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    return (
+        <>
+            <div className={styles.menu}>
+                <div className={styles.header}>
+                    <img src="../src/img/logo.svg" alt="Logo" />
+                    <div className={styles.language}>
+                        <img className={styles.world} src="../src/img/lang.svg" alt="Language" />
+                        <select className={styles.lang}>
+                            <option className={styles.languages} value="RU">RU</option>
+                            <option className={styles.languages} value="EN">EN</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div className={styles.chats_menu}>
+                    <button className={styles.newChat} onClick={handleCreateChat}>
+                        <img className={styles.img_chat} src="../src/img/add-chat.svg" alt="" />
+                    </button>
+                    <button className={styles.search}>
+                        <img className={styles.img_chat} src="../src/img/search.svg" alt="" />
+                    </button>
+                </div>
+
+                <div className={styles.center}>
+                    <ul className={styles.list}>
+                        {chats.map((chat) => (
+                            <li key={chat.id} className={styles.chatItem}>
+                                <Chat title={chat.name} handleDeleteChat={handleDeleteChat} chat={chat} />
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+                <Users />
+            </div>
+        </>
+    )
+}

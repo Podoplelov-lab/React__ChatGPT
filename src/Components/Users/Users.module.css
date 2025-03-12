@@ -1,0 +1,32 @@
+.users{
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+    border: 1px solid rgba(49, 62, 98, 1);
+    border-radius: 16px;
+    align-items: center;
+}
+
+.info{
+    display: flex;
+}
+
+.avatar{
+    max-width: 50px;
+    max-height: 40px;
+    margin-right: 12px;
+}
+
+.nickname{
+    display: flex;
+    flex-direction: column;
+}
+
+.nickname__content{
+
+font-weight: 500;
+font-size: 14px;
+line-height: 18px;
+letter-spacing: 0%;
+color: rgba(255, 255, 255, 1);
+}
