@@ -1,54 +1,35 @@
-# React + TypeScript + Vite
+<h1>ТЕСТОВОЕ ЗАДАНИЕ СОЗДАТЬ ЧАТ БОТА</h1>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<h2>Требования</h2>
 
-Currently, two official plugins are available:
+Сделать верстку по макету;
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Простая авторизация ( через localstorage, с указанием имени и пароля );
 
-## Expanding the ESLint configuration
+Вывод имени пользователя;
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Выход из аккаунта;
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+Добавить добавление / удаление чатов;
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Вывод списка чатов;
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Чат с ботом;
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+<h2>Технические требования:<h2/>
+
+Использовать React и Typescript для разработки приложения.
+
+Для управления состоянием использовать любой стейт-менеджер или Context API.
+
+Стилизацию выполнить с использованием CSS-in-JS (например, Styled Components или Emotion) или CSS.
+
+Приложение должно быть адаптивным и корректно отображаться на устройствах с разными разрешениями экрана. При изменении разрешении экрана левый блок (сайдбар) можно просто спрятать или добавить кнопку по типу переключателя между сайдбаром и чатом.
+
+Код должен быть чистым и легко читаемым.
+
+
+<h2>Запуск проекта</h2>
+
+```bash
+npm run dev
