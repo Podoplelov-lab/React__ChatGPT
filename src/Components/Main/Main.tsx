@@ -1,88 +1,127 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import ModalList from "../ModelList/ModelList";
-import styles from "./Main.module.css"
-import { getMessages } from "../../api";
+import styles from "./Main.module.css";
+import { getMessages, sendMessage } from "../../api";  // Импортируем необходимые функции
+import { useChatContext } from "../../ChatContext";
+import { NativeEventSource, EventSourcePolyfill } from 'event-source-polyfill';
+
+// Определим тип для сообщения
+interface Message {
+  id: string;
+  content: string;
+  user_id: string;
+  created_at: string;
+}
 
 export default function Main() {
-  const handleChange = (event) => {
-    const selectedValue = event.target.value;
-    const iconMap = {
-      "ChatGPT": "../src/img/gpt3.5.png",
-      "DALL-E": "../src/img/gpt4.svg",
-      "Midjourney": "../src/img/mj.svg"
-    };
-    
-    event.target.style.backgroundImage = `url(${iconMap[selectedValue]})`;
-  };
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [message, setMessage] = useState("");
+  // const [chatId, setChatId] = useState("320823e5-52ed-48a7-b483-5c41d36460f7"); 
 
-  const [messages, setMessages] = useState([])
+  const { activeChat } = useChatContext()
+
+  console.log(activeChat)
+
+
+  // Получаем сообщения при монтировании компонента
 
   useEffect(() => {
-     getMessages("320823e5-52ed-48a7-b483-5c41d36460f7").then(({data}) => {
-      setMessages(data.data)
-     }).catch((error) => {
-          console.log(error)
-     })
-  },[])
+
+    if (!activeChat) {
+      return
+    }
+
+    var eventSource = new EventSourcePolyfill(`https://bothubq.com/api/v2/chat/${activeChat}/stream`, {
+      headers: {
+        authorization: "Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIxNjBhOTAxLWJiMzYtNDIzZS05NGQ1LWVmMzM5YTcxMDQwNSIsImlzRGV2ZWxvcGVyIjp0cnVlLCJpYXQiOjE3NDAwNjA3NDEsImV4cCI6MjA1NTYzNjc0MX0.JYrAECA8EpzptOqtKIyq7gJWf83hburC9S25yF5Xt3k"
+      }
+    });
+
+
+    eventSource.onmessage = function (event) {
+      console.log("Новое сообщение", JSON.parse(event.data));
+      // этот код выведет в консоль 3 сообщения, из потока данных выше
+    };
+
+    getMessages(activeChat)
+      .then(({ data }) => {
+        setMessages(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    return () => {
+      if (eventSource) {
+        eventSource.close()
+      }
+    }
+  }, [activeChat]);
+
+  // Обработчик изменения ввода сообщения
+  const handleMessageChange = (event) => {
+    setMessage(event.target.value);
+  };
+
+  // Обработчик отправки сообщения
+  const handleSendMessage = async () => {
+    if (!message.trim() || !activeChat) {
+      return; // Не отправляем пустое сообщение
+    }
+
+    try {
+      const response = await sendMessage(activeChat, message); // Отправляем сообщение
+      // После отправки, добавляем сообщение в список сообщений
+      // setMessages((prevMessages) => [
+      //   ...prevMessages,
+      //   {
+      //     id: response.id,
+      //     content: message,
+      //     user_id: "user", // Можно передать идентификатор пользователя
+      //     created_at: new Date().toISOString(),
+      //   },
+      // ]);
+      // setMessage(""); // Очищаем поле ввода после отправки
+    } catch (error) {
+      console.error("Ошибка при отправке сообщения:", error);
+    }
+  };
 
   console.log(messages)
-
   return (
-    <>
-      <div className={styles.background}>
-        <ul className={styles.ul}>
-          <li className={styles.li__users}>
+    <div className={styles.background}>
+      <ul className={styles.ul}>
+        {/* Список сообщений */}
+        {messages.map((msg) => (
+          <li key={msg.id} className={styles.li__users}>
             <img className={styles.massage__copers} src="../src/img/message-tools.svg" alt="" />
             <div className={styles.block__user}>
-              <span className={styles.massage__user}>Привет бот</span>
-              <span className={styles.time}>09:54</span>
+              <span className={styles.massage__user}>{msg.user_id}</span>
+              <span className={styles.time}>{new Date(msg.created_at).toLocaleTimeString()}</span>
             </div>
             <img className={styles.avatar__users} src="../src/img/default-avatar.svg" alt="" />
-          </li>
-
-
-          <li className={styles.li__chatGPT}>
-            <img className={styles.chatGPT__img} src="../src/img/gpt.svg" alt="" />
-            <div className={styles.chatGPT_content}>
-              <div className={styles.chatGPT__info}>
-                <span className={styles.name}>
-                  ChatGPT
-                </span>
-                <span className={styles.version}>
-                  gpt-3.5-turbo
-                </span>
-              </div>
-              <div>
-                <span className={styles.massage__chatGPT}>
-                  Привет! Чем я могу помочь?
-                </span>
-              </div>
-              <div className={styles.massage__bottom}>
-                <div className={styles.caps}>
-                  <span className={styles.caps__content}>-223 CAPS</span>
-                  <img className={styles.caps__img} src="../src/img/message-tools.svg" alt="" />
-                </div>
-                <div>
-                  <span className={styles.time}>09:54</span>
-                </div>
-              </div>
+            <div className={styles.messageContent}>
+              <p className={styles.messageText}>{msg.content}</p>
             </div>
           </li>
+        ))}
+      </ul>
 
-        </ul>
-
-        <div>
-            <ModalList/>
+      <div>
+        <ModalList />
         <div className={styles.inputContainer}>
-          <input type="text" className={styles.input} placeholder="Cпроси о чем-нибудь..." />
-          <button className={styles.sendButton}>
+          <input
+            type="text"
+            className={styles.input}
+            value={message}
+            onChange={handleMessageChange}
+            placeholder="Спроси о чем-нибудь..."
+          />
+          <button className={styles.sendButton} onClick={handleSendMessage}>
             <img src="../src/img/button.svg" alt="Отправить" />
           </button>
         </div>
-
-        </div>
-
       </div>
-    </>
+    </div>
   );
 }

@@ -4,9 +4,11 @@ import Users from "../Users/Users"
 import styles from "./ChatList.module.css"
 import { deleteChat, getChats, postChat } from "../../api"
 import { TChat } from "../../types"
+import { useChatContext } from "../../ChatContext"
 
 export default function Chats() {
     const [chats, setChats] = useState<TChat[]>([])
+    const {setActiveChat} = useChatContext()
 
     // Получение всех чатов
     useEffect(() => {
@@ -16,14 +18,16 @@ export default function Chats() {
     }, [])
 
     // Функция для создания нового чата
-    const handleCreateChat = async () => {
+    const handleCreateChat = async (name) => {
         try {
-            const { data } = await postChat()
-            setChats((prevChats) => [...prevChats, data])
+            console.log(name)
+            console.log("Отправляем данные:", { name });
+            const { data } = await postChat(name);
+            setChats((prevChats) => [...prevChats, data]);
         } catch (error) {
-            console.log(error)
+            console.error("Ошибка при создании чата:", error);
         }
-    }
+    };
 
     // Функция для удаления чата
     const handleDeleteChat = async (chatId: string) => {
@@ -33,6 +37,10 @@ export default function Chats() {
         } catch (error) {
             console.log(error)
         }
+    }
+
+    const selectChat = (id: string) => {
+        setActiveChat?.(id)
     }
 
     return (
@@ -45,12 +53,12 @@ export default function Chats() {
                         <select className={styles.lang}>
                             <option className={styles.languages} value="RU">RU</option>
                             <option className={styles.languages} value="EN">EN</option>
-                        </select>
+                        </select> 
                     </div>
                 </div>
 
                 <div className={styles.chats_menu}>
-                    <button className={styles.newChat} onClick={handleCreateChat}>
+                    <button className={styles.newChat} onClick={() => handleCreateChat("Тестовый чат")}>
                         <img className={styles.img_chat} src="../src/img/add-chat.svg" alt="" />
                     </button>
                     <button className={styles.search}>
@@ -62,7 +70,7 @@ export default function Chats() {
                     <ul className={styles.list}>
                         {chats.map((chat) => (
                             <li key={chat.id} className={styles.chatItem}>
-                                <Chat title={chat.name} handleDeleteChat={handleDeleteChat} chat={chat} />
+                                <Chat selectChat={selectChat} title={chat.name} handleDeleteChat={handleDeleteChat} id={chat.id} />
                             </li>
                         ))}
                     </ul>

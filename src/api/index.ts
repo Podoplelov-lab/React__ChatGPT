@@ -1,27 +1,73 @@
 import axios, { AxiosResponse } from "axios"
 import { TChat, TModal } from "../types"
+import { TOKEN } from "../const"
 
 
 const getChats = () : Promise<AxiosResponse<{data: TChat[]}>> => {
-    return axios.get("https://bothubq.com/api/v2/chat/list", {headers: {authorization: "Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIxNjBhOTAxLWJiMzYtNDIzZS05NGQ1LWVmMzM5YTcxMDQwNSIsImlzRGV2ZWxvcGVyIjp0cnVlLCJpYXQiOjE3NDAwNjA3NDEsImV4cCI6MjA1NTYzNjc0MX0.JYrAECA8EpzptOqtKIyq7gJWf83hburC9S25yF5Xt3k"}})
+    return axios.get("https://bothubq.com/api/v2/chat/list", {headers: {authorization: `Token ${TOKEN}`}})
 }
 
 const getModuleList = () : Promise<AxiosResponse<TModal[]>> => {
-    return axios.get("https://bothubq.com/api/v2/model/list", {headers: {authorization: "Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIxNjBhOTAxLWJiMzYtNDIzZS05NGQ1LWVmMzM5YTcxMDQwNSIsImlzRGV2ZWxvcGVyIjp0cnVlLCJpYXQiOjE3NDAwNjA3NDEsImV4cCI6MjA1NTYzNjc0MX0.JYrAECA8EpzptOqtKIyq7gJWf83hburC9S25yF5Xt3k"}})
+    return axios.get("https://bothubq.com/api/v2/model/list", {headers: {authorization: `Token ${TOKEN}`}})
 }
 
 
-const getMessages = (id: string) => {
-    return axios.get(`https://bothubq.com/api/v2/chat/${id}/messages`, {headers: {authorization: "Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIxNjBhOTAxLWJiMzYtNDIzZS05NGQ1LWVmMzM5YTcxMDQwNSIsImlzRGV2ZWxvcGVyIjp0cnVlLCJpYXQiOjE3NDAwNjA3NDEsImV4cCI6MjA1NTYzNjc0MX0.JYrAECA8EpzptOqtKIyq7gJWf83hburC9S25yF5Xt3k"}})
-}
+const getMessages = async (chatId: string) => {
+    try {
+        const response = await axios.get(
+            `https://bothubq.com/api/v2/chat/${chatId}/messages`,
+            {
+                headers: {
+                    Authorization: `Token ${TOKEN}`
+                }
+            }
+        );
+
+        console.log("Сообщения чата:", response.data);
+        return response.data;
+    } catch (error) {
+        console.error("Ошибка при получении сообщений:", error.response?.data || error.message);
+        return [];
+    }
+};
 
 const deleteChat = (id: string) => {
-    return axios.delete(`https://bothubq.com/api/v2/chat/${id}`, {headers: {authorization: "Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIxNjBhOTAxLWJiMzYtNDIzZS05NGQ1LWVmMzM5YTcxMDQwNSIsImlzRGV2ZWxvcGVyIjp0cnVlLCJpYXQiOjE3NDAwNjA3NDEsImV4cCI6MjA1NTYzNjc0MX0.JYrAECA8EpzptOqtKIyq7gJWf83hburC9S25yF5Xt3k"}})
+    return axios.delete(`https://bothubq.com/api/v2/chat/${id}`, {headers: {authorization: `Token ${TOKEN}`}})
 }
 
 
 const postChat = (name: string) => {
-    return axios.post(`https://bothubq.com/api/v2/chat`, {headers: {authorization: "Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIxNjBhOTAxLWJiMzYtNDIzZS05NGQ1LWVmMzM5YTcxMDQwNSIsImlzRGV2ZWxvcGVyIjp0cnVlLCJpYXQiOjE3NDAwNjA3NDEsImV4cCI6MjA1NTYzNjc0MX0.JYrAECA8EpzptOqtKIyq7gJWf83hburC9S25yF5Xt3k"}})
-}
+    return axios.post(
+        "https://bothubq.com/api/v2/chat",
+        { name },
+        {
+            headers: {
+                Authorization: `Token ${TOKEN}`,
+                "Content-Type": "application/json"
+            }
+        }
+    );
+};
 
-export {getChats, getModuleList, getMessages, deleteChat, postChat}
+  const sendMessage = async (chatId: string, message: string) => {
+    const requestBody = {
+      chatId,
+      message,
+      tgBotMessageId: "",
+      platform: "MAIN", 
+    };
+  
+    try {
+      const response = await axios.post('https://your-api-url.com/message/send', requestBody, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Ошибка при отправке сообщения", error);
+    }
+  };
+  
+
+export {getChats, getModuleList, getMessages, deleteChat, postChat, sendMessage}

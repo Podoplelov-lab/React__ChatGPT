@@ -18,3 +18,7 @@
     width: 18px;
     margin-right: 8px;
 }
+
+.title:active{
+    color: rgba(255, 255, 255, 1);
+}
