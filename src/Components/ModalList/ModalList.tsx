@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react"
-import style from "./ModelList.module.css"
+import style from "./ModalList.module.css"
 import { getModuleList } from "../../api"
 import { TModal } from "../../types"
 
 
-const ModalList = ({onChange}) => {
+const ModalList = ({onChange}: {onChange?: () => void}) => {
 
     const [models, setModels] = useState<TModal[]>([])
-
+    console.log(models)
     useEffect(() => {
         getModuleList().then(({data}) => {
             setModels(data)

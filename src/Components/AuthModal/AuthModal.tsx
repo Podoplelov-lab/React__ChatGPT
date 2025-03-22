@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styles from "./AuthModal.module.css";
 
 const AuthModal = ({ isOpen, onClose }) => {
@@ -12,8 +11,8 @@ const AuthModal = ({ isOpen, onClose }) => {
           <button onClick={onClose} className={styles.closeButton}>&times;</button>
         </div>
         <div className={styles.content}>
-          <label className={styles.label}>E-mail</label>
-          <input type="email" placeholder="Ваш E-mail" className={styles.input} />
+          <label className={styles.label}>Имя</label>
+          <input type="name" placeholder="Ваше имя" className={styles.input} />
           <label className={styles.label}>Пароль</label>
           <input type="password" placeholder="Ваш Пароль" className={styles.input} />
           <button className={styles.button}>Войти</button>

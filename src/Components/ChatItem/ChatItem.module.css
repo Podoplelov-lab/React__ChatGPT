@@ -1,0 +1,24 @@
+.lists {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+}
+
+.info {
+    display: flex;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0%;
+}
+
+.lists_img {
+    max-height: 18px;
+    width: 18px;
+    margin-right: 8px;
+}
+
+.title:active{
+    color: rgba(255, 255, 255, 1);
+}

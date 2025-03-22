@@ -2,72 +2,56 @@ import axios, { AxiosResponse } from "axios"
 import { TChat, TModal } from "../types"
 import { TOKEN } from "../const"
 
+const $api = axios.create({
+    baseURL: "https://bothubq.com/api/v2/",
+  })
+
+
+  $api.interceptors.request.use((config) => {
+    if (config.headers)
+      config.headers.Authorization = `Token ${TOKEN}`
+  
+    return config
+  })
+
 
 const getChats = () : Promise<AxiosResponse<{data: TChat[]}>> => {
-    return axios.get("https://bothubq.com/api/v2/chat/list", {headers: {authorization: `Token ${TOKEN}`}})
+    return $api({url: "chat/list", method: "GET"})
 }
 
 const getModuleList = () : Promise<AxiosResponse<TModal[]>> => {
-    return axios.get("https://bothubq.com/api/v2/model/list", {headers: {authorization: `Token ${TOKEN}`}})
+    return $api({url: "model/list", method: "GET"})
 }
 
 
 const getMessages = async (chatId: string) => {
     try {
-        const response = await axios.get(
-            `https://bothubq.com/api/v2/chat/${chatId}/messages`,
-            {
-                headers: {
-                    Authorization: `Token ${TOKEN}`
-                }
-            }
-        );
-
-        console.log("Сообщения чата:", response.data);
+        const response = await  $api({url: `chat/${chatId}/messages`, method: "GET"})
+        // console.log("Сообщения чата:", response.data);
         return response.data;
-    } catch (error) {
-        console.error("Ошибка при получении сообщений:", error.response?.data || error.message);
-        return [];
+    } catch {
+        console.error("Ошибка при получении сообщений");
     }
 };
 
 const deleteChat = (id: string) => {
-    return axios.delete(`https://bothubq.com/api/v2/chat/${id}`, {headers: {authorization: `Token ${TOKEN}`}})
+    return $api({url: `chat/${id}`, method: "DELETE"})
 }
 
 
 const postChat = (name: string) => {
-    return axios.post(
-        "https://bothubq.com/api/v2/chat",
-        { name },
-        {
-            headers: {
-                Authorization: `Token ${TOKEN}`,
-                "Content-Type": "application/json"
-            }
-        }
-    );
+    return $api({url: `chat`, method: "POST", data: {name}})
 };
 
-  const sendMessage = async (chatId: string, message: string) => {
-    const requestBody = {
-      chatId,
-      message,
-      tgBotMessageId: "",
-      platform: "MAIN", 
-    };
-  
-    try {
-      const response = await axios.post('https://your-api-url.com/message/send', requestBody, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      return response.data;
-    } catch (error) {
-      console.error("Ошибка при отправке сообщения", error);
-    }
-  };
+const sendMessage = async (chatId: string, message: string) => {
+  try {
+    const response = await $api({url: `message/send`, method: "POST", data: {message, chatId}});
+    // console.log("Ответ от сервера:", response.data);
+    return response.data;
+  } catch {
+    console.error("Ошибка при отправке сообщения");
+  }
+};
   
 
 export {getChats, getModuleList, getMessages, deleteChat, postChat, sendMessage}

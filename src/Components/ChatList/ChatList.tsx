@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import Chat from "../Chat/Chat"
+import ChatItem from "../ChatItem/ChatItem"
 import Users from "../Users/Users"
 import styles from "./ChatList.module.css"
 import { deleteChat, getChats, postChat } from "../../api"
@@ -13,9 +13,12 @@ export default function Chats() {
     // Получение всех чатов
     useEffect(() => {
         getChats()
-            .then(({ data }) => setChats(data.data))
-            .catch((error) => console.log(error))
-    }, [])
+          .then(({ data }) => {
+            console.log("Доступные чаты:", data.data);
+            setChats(data.data);
+          })
+          .catch((error) => console.log(error));
+      }, []);
 
     // Функция для создания нового чата
     const handleCreateChat = async (name) => {
@@ -70,7 +73,7 @@ export default function Chats() {
                     <ul className={styles.list}>
                         {chats.map((chat) => (
                             <li key={chat.id} className={styles.chatItem}>
-                                <Chat selectChat={selectChat} title={chat.name} handleDeleteChat={handleDeleteChat} id={chat.id} />
+                                <ChatItem selectChat={selectChat} title={chat.name} handleDeleteChat={handleDeleteChat} id={chat.id} />
                             </li>
                         ))}
                     </ul>
