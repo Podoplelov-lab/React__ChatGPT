@@ -5,11 +5,11 @@ export default function User() {
   const navigate = useNavigate()
 
 
-  const {name} = localStorage.getItem("auth")? JSON.parse(localStorage.getItem("auth") || "") : {}
+  const { name } = localStorage.getItem("auth") ? JSON.parse(localStorage.getItem("auth") || "") : {}
 
   const logout = () => {
     localStorage.removeItem("auth")
-    navigate({to: "/login"})
+    navigate({ to: "/login" })
   }
 
 

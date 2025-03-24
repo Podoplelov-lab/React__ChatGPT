@@ -19,7 +19,7 @@ const ModelList = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
-    setSelectedModel(value); 
+    setSelectedModel(value);
   };
 
   return (

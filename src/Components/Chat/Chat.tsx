@@ -32,15 +32,15 @@ export default function Main() {
 
     eventSource.onmessage = function (event: any) {
       const newMessage = JSON.parse(event.data);
-      const {name, data} = newMessage 
+      const { name, data } = newMessage
 
-      if(name === "MESSAGE_UPDATE" && data.message.chat_id){
+      if (name === "MESSAGE_UPDATE" && data.message.chat_id) {
         console.log("Новое сообщение из стрима:", newMessage);
         setMessages((prevMessages) => [data.message, ...prevMessages]);
       }
 
     };
-    
+
 
     getMessages(activeChat)
       .then(({ data }) => {
@@ -137,5 +137,5 @@ export default function Main() {
       </div>
     </div>
   );
-  
+
 }

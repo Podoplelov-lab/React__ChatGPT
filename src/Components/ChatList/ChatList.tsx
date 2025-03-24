@@ -8,17 +8,17 @@ import { useChatContext } from "../../ChatContext"
 
 export default function Chats() {
     const [chats, setChats] = useState<TChat[]>([])
-    const {setActiveChat} = useChatContext()
+    const { setActiveChat } = useChatContext()
 
     // Получение всех чатов
     useEffect(() => {
         getChats()
-          .then(({ data }) => {
-            console.log("Доступные чаты:", data.data);
-            setChats(data.data);
-          })
-          .catch((error) => console.log(error));
-      }, []);
+            .then(({ data }) => {
+                console.log("Доступные чаты:", data.data);
+                setChats(data.data);
+            })
+            .catch((error) => console.log(error));
+    }, []);
 
     // Функция для создания нового чата
     const handleCreateChat = async (name) => {
@@ -56,7 +56,7 @@ export default function Chats() {
                         <select className={styles.lang}>
                             <option className={styles.languages} value="RU">RU</option>
                             <option className={styles.languages} value="EN">EN</option>
-                        </select> 
+                        </select>
                     </div>
                 </div>
 
