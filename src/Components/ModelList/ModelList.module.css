@@ -1,0 +1,42 @@
+.select {
+    background-color: transparent;
+    padding: 10px 16px;
+    border: 1px solid rgba(49, 62, 98, 1);
+    border-radius: 10px;
+    color: white;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 20px;
+    letter-spacing: 0%;
+    margin-bottom: 14px;
+    padding-left: 40px; /* Оставляем место под иконку */
+    background-position: left 10px center;
+    background-repeat: no-repeat;
+    -webkit-appearance: none; /* Убираем стандартный вид в Webkit-браузерах */
+    -moz-appearance: none; /* Убираем стандартный вид в Firefox */
+    appearance: none; /* Убираем стандартный вид */
+  }
+  
+  .select.ChatGPT {
+    background-image: url("../src/img/gpt35.png");
+  }
+  
+  .select.DAllE {
+    background-image: url("../src/img/gpt4.svg");
+  }
+  
+  .select.Midjourney {
+    background-image: url("../src/img/mj.svg");
+  }
+  
+  .select option {
+    background-color: rgba(18, 24, 37, 1);
+    color: rgba(255, 255, 255, 1);
+    font-size: 16px;
+    font-weight: 400;
+    font-family: inherit;
+  }
+  
+  .select option:hover {
+    background-color: rgba(34, 43, 68, 1);
+  }

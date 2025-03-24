@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
-import ModalList from "../ModalList/ModalList.tsx";
+import ModalList from "../ModelList/ModelList.tsx";
 import styles from "./Chat.module.css";
 import { getMessages, sendMessage } from "../../api/index.ts";
 import { useChatContext } from "../../ChatContext.tsx";
 import { EventSourcePolyfill } from "event-source-polyfill";
 import { TOKEN } from "../../const/index.ts";
-import AuthModal from "../AuthModal/AuthModal.tsx";
 
 interface Message {
   id: string;
@@ -19,7 +18,6 @@ export default function Main() {
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [value, setValue] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(true);
 
 
   useEffect(() => {
@@ -137,7 +135,6 @@ export default function Main() {
           </button>
         </div>
       </div>
-      <AuthModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
   
